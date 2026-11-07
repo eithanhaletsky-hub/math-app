@@ -12,11 +12,12 @@ export function Frac({ n, d }: { n: string | number; d: string | number }) {
 
 /** Math shown left-to-right and isolated from the surrounding Hebrew. "a/b" → stacked fraction. */
 export function MathText({ children, className = '' }: { children: string; className?: string }) {
-  const parts = children.split(/(\d+\/\d+)/g);
+  // "3/4" and also "?/6" become stacked fractions
+  const parts = children.split(/([\d?]+\/[\d?]+)/g);
   return (
     <bdi dir="ltr" className={`math ${className}`}>
       {parts.map((p, i) => {
-        const m = /^(\d+)\/(\d+)$/.exec(p);
+        const m = /^([\d?]+)\/([\d?]+)$/.exec(p);
         return m ? <Frac key={i} n={m[1]} d={m[2]} /> : <Fragment key={i}>{p}</Fragment>;
       })}
     </bdi>

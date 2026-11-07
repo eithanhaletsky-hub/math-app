@@ -196,6 +196,37 @@ export function PolygonFigure({ sides, unit = '' }: { sides: (number | null)[]; 
   );
 }
 
+/** Two lines: parallel, perpendicular (with right-angle mark) or crossing. */
+export function LinesFigure({ kind, rotate = 0 }: { kind: 'parallel' | 'perpendicular' | 'crossing'; rotate?: number }) {
+  const s = { stroke: '#1c7ed6', strokeWidth: 5, strokeLinecap: 'round' as const };
+  const s2 = { ...s, stroke: '#e8590c' };
+  return (
+    <svg className="angle-fig" viewBox="0 0 200 160" role="img" aria-label="ישרים">
+      <g transform={`rotate(${rotate} 100 80)`}>
+        {kind === 'parallel' && (
+          <>
+            <line x1="20" y1="55" x2="180" y2="55" {...s} />
+            <line x1="20" y1="105" x2="180" y2="105" {...s2} />
+          </>
+        )}
+        {kind === 'perpendicular' && (
+          <>
+            <line x1="20" y1="80" x2="180" y2="80" {...s} />
+            <line x1="100" y1="10" x2="100" y2="150" {...s2} />
+            <polyline points="100,66 114,66 114,80" fill="none" stroke="#343a40" strokeWidth="2" />
+          </>
+        )}
+        {kind === 'crossing' && (
+          <>
+            <line x1="20" y1="80" x2="180" y2="80" {...s} />
+            <line x1="50" y1="150" x2="150" y2="10" {...s2} />
+          </>
+        )}
+      </g>
+    </svg>
+  );
+}
+
 /** An angle drawn from a vertex with an arc. */
 export function AngleFigure({ deg, rotate = 0 }: { deg: number; rotate?: number }) {
   const vx = 120;

@@ -35,6 +35,36 @@ export function ShapeSvg({ shape, color = '#4dabf7', size = 140 }: { shape: Shap
     case 'rhombus':
       el = <polygon points="60,4 108,50 60,96 12,50" {...common} />;
       break;
+    case 'parallelogram':
+      el = <polygon points="30,20 116,20 90,82 4,82" {...common} />;
+      break;
+    case 'trapezoid':
+      el = <polygon points="34,18 86,18 114,84 6,84" {...common} />;
+      break;
+    case 'kite':
+      el = <polygon points="60,4 96,36 60,96 24,36" {...common} />;
+      break;
+    case 'triEquilateral':
+      el = <polygon points="60,8 109,93 11,93" {...common} />;
+      break;
+    case 'triIsosceles':
+      el = <polygon points="60,4 88,94 32,94" {...common} />;
+      break;
+    case 'triScalene':
+      el = <polygon points="78,8 114,92 6,74" {...common} />;
+      break;
+    case 'triRight':
+      el = (
+        <>
+          <polygon points="14,10 14,90 106,90" {...common} />
+          <polyline points="14,76 28,76 28,90" fill="none" stroke="#343a40" strokeWidth="2" />
+        </>
+      );
+      break;
+    case 'triObtuse':
+      // the angle at (30,88) is obtuse: the top vertex lies outside the base
+      el = <polygon points="30,88 116,88 4,36" {...common} />;
+      break;
   }
   return (
     <svg className="shape" width={size} height={(size * 100) / 120} viewBox="0 0 120 100" role="img" aria-hidden="true">

@@ -3,7 +3,7 @@ import type { Visual } from '../../content/types';
 import { NumberLineSvg } from './NumberLineSvg';
 import { ClockFace } from './ClockFace';
 import { FractionSvg, RulerSvg, ShapeSvg } from './ShapeSvg';
-import { AngleFigure, AreaModel, ArrayGrid, Money, PolygonFigure, RectFigure, SolidSvg, VerticalSum } from './MoreVisuals';
+import { AngleFigure, AreaModel, ArrayGrid, LinesFigure, Money, PolygonFigure, RectFigure, SolidSvg, VerticalSum } from './MoreVisuals';
 
 function Objects({ emoji, groups, crossed = 0, tappable }: { emoji: string; groups: number[]; crossed?: number; tappable?: boolean }) {
   const total = groups.reduce((a, b) => a + b, 0);
@@ -203,6 +203,8 @@ export function VisualView({ v }: { v: Visual }) {
       return <RectFigure w={v.w} h={v.h} unit={v.unit} grid={v.grid} hideW={v.hideW} hideH={v.hideH} />;
     case 'polygon':
       return <PolygonFigure sides={v.sides} unit={v.unit} />;
+    case 'lines':
+      return <LinesFigure kind={v.kind} rotate={v.rotate} />;
     case 'angle':
       return <AngleFigure deg={v.deg} rotate={v.rotate} />;
     case 'array':

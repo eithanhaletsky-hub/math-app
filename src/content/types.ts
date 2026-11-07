@@ -16,7 +16,15 @@ export type ShapeName =
   | 'pentagon'
   | 'hexagon'
   | 'oval'
-  | 'rhombus';
+  | 'rhombus'
+  | 'parallelogram'
+  | 'trapezoid'
+  | 'kite'
+  | 'triEquilateral'
+  | 'triIsosceles'
+  | 'triScalene'
+  | 'triRight'
+  | 'triObtuse';
 
 export type SolidName = 'cube' | 'box' | 'cylinder' | 'cone' | 'sphere' | 'pyramid';
 
@@ -51,6 +59,8 @@ export type Visual =
   | { type: 'rect'; w: number; h: number; unit?: string; grid?: boolean; hideW?: boolean; hideH?: boolean }
   /** Polygon (drawn regular, not to scale) with a label on each side. */
   | { type: 'polygon'; sides: (number | null)[]; unit?: string }
+  /** Two lines: parallel, perpendicular, or just crossing. */
+  | { type: 'lines'; kind: 'parallel' | 'perpendicular' | 'crossing'; rotate?: number }
   /** An angle of `deg` degrees. */
   | { type: 'angle'; deg: number; rotate?: number }
   /** rows × cols grid (multiplication as an array). */
