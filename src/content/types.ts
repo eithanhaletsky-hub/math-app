@@ -59,6 +59,10 @@ export type Visual =
   | { type: 'rect'; w: number; h: number; unit?: string; grid?: boolean; hideW?: boolean; hideH?: boolean }
   /** Polygon (drawn regular, not to scale) with a label on each side. */
   | { type: 'polygon'; sides: (number | null)[]; unit?: string }
+  /** Circle with the radius or the diameter drawn and labeled. */
+  | { type: 'circle'; show: 'r' | 'd'; value: number | null; unit?: string }
+  /** 10×10 grid with `filled` squares colored (percent = squares out of 100). */
+  | { type: 'percentGrid'; filled: number }
   /** Bar chart (single series). */
   | { type: 'barchart'; bars: { label: string; value: number }[]; step: number; title?: string }
   /** Triangle or parallelogram with base and (dashed) height marked. */

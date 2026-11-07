@@ -543,6 +543,11 @@ p {
   font-size: 1.3rem;
   font-weight: 500;
 }
+/* long math inside a sentence (like a list of numbers) may wrap on phones */
+.question__text .math,
+.feedback__hint .math {
+  white-space: normal;
+}
 .expr {
   font-size: 2.3rem;
   background: var(--soft);
@@ -1331,6 +1336,26 @@ button.obj:active {
   font-weight: 700;
   fill: #1864ab;
   font-family: inherit;
+}
+
+/* percent grid */
+.pgrid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 2px;
+  width: 100%;
+  max-width: 240px;
+  padding: 4px;
+  background: #dee2e6;
+  border-radius: 6px;
+}
+.pgrid__cell {
+  aspect-ratio: 1;
+  background: #fff;
+  border-radius: 2px;
+}
+.pgrid__cell--on {
+  background: #f76707;
 }
 
 /* bar chart */

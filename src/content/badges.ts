@@ -53,7 +53,15 @@ const perWorld: Badge[] = worlds.flatMap((w) => [
   },
 ]);
 
-export const badges: Badge[] = [...general, ...perWorld];
+const grandFinale: Badge = {
+  id: 'all-worlds',
+  icon: '👑',
+  title: 'אלוף המתמטיקה',
+  how: 'עוברים את כל השלבים בכל ששת העולמות',
+  earned: (p) => worlds.every((w) => isWorldComplete(w, p)),
+};
+
+export const badges: Badge[] = [...general, ...perWorld, grandFinale];
 
 export function findBadge(id: string): Badge | undefined {
   return badges.find((b) => b.id === id);

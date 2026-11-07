@@ -196,6 +196,43 @@ export function PolygonFigure({ sides, unit = '' }: { sides: (number | null)[]; 
   );
 }
 
+/** Circle with radius (center → edge) or diameter (edge → edge through the center). */
+export function CircleFigure({ show, value, unit = '' }: { show: 'r' | 'd'; value: number | null; unit?: string }) {
+  const label = value === null ? '?' : `${value}${unit ? ' ' + unit : ''}`;
+  return (
+    <svg className="rect-fig" viewBox="0 0 240 220" style={{ direction: 'ltr' }} role="img" aria-label={show === 'r' ? 'עיגול עם רדיוס' : 'עיגול עם קוטר'}>
+      <circle cx="120" cy="110" r="90" fill="#fff3bf" stroke="#f08c00" strokeWidth="3" />
+      <circle cx="120" cy="110" r="4" fill="#343a40" />
+      {show === 'r' ? (
+        <>
+          <line x1="120" y1="110" x2="210" y2="110" stroke="#e8590c" strokeWidth="3.5" />
+          <text x="165" y="100" textAnchor="middle" className="fig-label">
+            {label}
+          </text>
+        </>
+      ) : (
+        <>
+          <line x1="30" y1="110" x2="210" y2="110" stroke="#1c7ed6" strokeWidth="3.5" />
+          <text x="120" y="100" textAnchor="middle" className="fig-label">
+            {label}
+          </text>
+        </>
+      )}
+    </svg>
+  );
+}
+
+/** 10 × 10 grid: each square is 1%. */
+export function PercentGrid({ filled }: { filled: number }) {
+  return (
+    <div className="pgrid" dir="ltr" aria-label={`${filled} מתוך 100 משבצות צבועות`}>
+      {Array.from({ length: 100 }, (_, i) => (
+        <span key={i} className={i < filled ? 'pgrid__cell pgrid__cell--on' : 'pgrid__cell'} />
+      ))}
+    </div>
+  );
+}
+
 /** Single-series bar chart with a recessive grid; values readable from the axis. */
 export function BarChart({ bars, step, title }: { bars: { label: string; value: number }[]; step: number; title?: string }) {
   const max = Math.ceil(Math.max(...bars.map((b) => b.value)) / step) * step;

@@ -3,7 +3,7 @@ import type { Visual } from '../../content/types';
 import { NumberLineSvg } from './NumberLineSvg';
 import { ClockFace } from './ClockFace';
 import { FractionSvg, RulerSvg, ShapeSvg } from './ShapeSvg';
-import { AngleFigure, AreaModel, ArrayGrid, BarChart, BaseHeightFigure, CuboidFigure, LinesFigure, Money, PolygonFigure, RectFigure, SolidSvg, VerticalSum } from './MoreVisuals';
+import { AngleFigure, AreaModel, ArrayGrid, BarChart, BaseHeightFigure, CircleFigure, CuboidFigure, LinesFigure, Money, PercentGrid, PolygonFigure, RectFigure, SolidSvg, VerticalSum } from './MoreVisuals';
 
 function Objects({ emoji, groups, crossed = 0, tappable }: { emoji: string; groups: number[]; crossed?: number; tappable?: boolean }) {
   const total = groups.reduce((a, b) => a + b, 0);
@@ -203,6 +203,10 @@ export function VisualView({ v }: { v: Visual }) {
       return <RectFigure w={v.w} h={v.h} unit={v.unit} grid={v.grid} hideW={v.hideW} hideH={v.hideH} />;
     case 'polygon':
       return <PolygonFigure sides={v.sides} unit={v.unit} />;
+    case 'circle':
+      return <CircleFigure show={v.show} value={v.value} unit={v.unit} />;
+    case 'percentGrid':
+      return <PercentGrid filled={v.filled} />;
     case 'barchart':
       return <BarChart bars={v.bars} step={v.step} title={v.title} />;
     case 'baseHeight':
