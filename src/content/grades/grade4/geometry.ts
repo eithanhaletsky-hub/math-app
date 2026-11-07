@@ -241,7 +241,11 @@ const lines: Level = {
   id: 'g4-geo-8',
   title: 'ישרים מקבילים ומאונכים',
   intro: {
-    lines: ['**מקבילים** — לעולם לא נפגשים, כמו פסי רכבת.', '**מאונכים** — נפגשים בזווית ישרה, כמו האות ⊥.'],
+    lines: [
+      '**מקבילים** — לעולם לא נפגשים, כמו פסי רכבת.',
+      '**מאונכים** — נפגשים בזווית ישרה, כמו האות ⊥.',
+      '**נחתכים** — נפגשים, אבל לא בזווית ישרה.',
+    ],
     visual: { type: 'lines', kind: 'perpendicular' },
   },
   generate: () => {
@@ -253,7 +257,7 @@ const lines: Level = {
       options: [
         { value: 'parallel', label: 'מקבילים' },
         { value: 'perpendicular', label: 'מאונכים' },
-        { value: 'crossing', label: 'נחתכים (לא בזווית ישרה)' },
+        { value: 'crossing', label: 'נחתכים' },
       ],
       answer: kind,
       hint: 'האם הם נפגשים? אם כן — בזווית ישרה?',
