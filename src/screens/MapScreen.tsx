@@ -23,6 +23,9 @@ export function MapScreen() {
           <span className="pill" aria-label={`${totalStars} כוכבים`}>
             ★ <bdi>{totalStars}</bdi>
           </span>
+          <button className="icon-btn" onClick={() => go('/badges')} aria-label="התגים שלי" title="התגים שלי">
+            🏅
+          </button>
           <MuteButton />
         </div>
       </header>
@@ -67,6 +70,12 @@ export function MapScreen() {
           );
         })}
       </div>
+
+      <footer className="map__footer">
+        <button className="map__parents" onClick={() => go('/parents')}>
+          🔒 אזור הורים
+        </button>
+      </footer>
     </div>
   );
 }

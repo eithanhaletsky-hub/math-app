@@ -13,6 +13,10 @@ import { ExerciseView } from '../components/exercises/ExerciseView';
 import { Confetti } from '../components/Confetti';
 import { Stars } from '../components/Stars';
 import { sound } from '../ui/sound';
+import { checkBadges } from '../engine/badges';
+import { findBadge } from '../content/badges';
+import { BadgeIcon } from '../components/BadgeToaster';
+import { pushBadgeToasts } from '../ui/toasts';
 import { AFTER_FAIL, ENCOURAGE, PRAISE, PRAISE_SECOND, resultLine, say } from '../ui/phrases';
 
 type Status = 'answering' | 'hint' | 'right' | 'failed';
@@ -43,6 +47,7 @@ function LevelGame({ levelId }: { levelId: string }) {
   const [line, setLine] = useState('');
   const [burst, setBurst] = useState(0);
   const [final, setFinal] = useState<{ score: number; stars: StarCount } | null>(null);
+  const [roundBadges, setRoundBadges] = useState<string[]>([]);
   const shownAt = useRef(Date.now());
 
   const q = questions[index];
@@ -55,12 +60,22 @@ function LevelGame({ levelId }: { levelId: string }) {
     shownAt.current = Date.now();
   }, [index, phase]);
 
+  const awardNow = useCallback(() => {
+    const fresh = checkBadges();
+    if (fresh.length) {
+      pushBadgeToasts(fresh);
+      setRoundBadges((b) => [...b, ...fresh]);
+      setTimeout(() => sound.badge(), 350);
+    }
+  }, []);
+
   const finishQuestion = useCallback(
     (result: AnswerResult) => {
       recordAnswer(topic.id, result, Date.now() - shownAt.current);
       setResults((r) => [...r, result]);
+      awardNow();
     },
-    [topic.id],
+    [topic.id, awardNow],
   );
 
   const onSubmit = useCallback(
@@ -98,6 +113,7 @@ function LevelGame({ levelId }: { levelId: string }) {
     const score = all.reduce((s, r) => s + pointsFor(r), 0) / questions.length;
     const stars = starsFor(score);
     finishLevel(level.id, score, stars);
+    awardNow();
     setFinal({ score, stars });
     setPhase('done');
     if (stars > 0) sound.win();
@@ -110,6 +126,7 @@ function LevelGame({ levelId }: { levelId: string }) {
     setResults([]);
     setLine('');
     setFinal(null);
+    setRoundBadges([]);
     setPhase('play');
   };
 
@@ -172,6 +189,22 @@ function LevelGame({ levelId }: { levelId: string }) {
           <p className="results__detail">
             ענית נכון בניסיון הראשון על <MathText>{`${firstTry}`}</MathText> מתוך <MathText>{`${questions.length}`}</MathText> שאלות.
           </p>
+          {roundBadges.length > 0 && (
+            <div className="results__badges">
+              <p>תגים חדשים בסבב הזה:</p>
+              <div className="results__badge-list">
+                {roundBadges.map((id) => {
+                  const b = findBadge(id);
+                  return b ? (
+                    <span key={id} className="results__badge">
+                      <BadgeIcon icon={b.icon} earned />
+                      {b.title}
+                    </span>
+                  ) : null;
+                })}
+              </div>
+            </div>
+          )}
           <div className="results__actions">
             {final.stars > 0 && nextRef && (
               <button className="btn btn--go btn--big" onClick={() => go(`/play/${nextRef.level.id}`)}>

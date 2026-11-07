@@ -209,7 +209,7 @@ export function setMuted(muted: boolean): void {
   commit({ ...state, settings: { ...state.settings, muted } });
 }
 
-export function setParentPin(pin: string): void {
+export function setParentPin(pin: string | null): void {
   commit({ ...state, parentPin: pin });
 }
 
