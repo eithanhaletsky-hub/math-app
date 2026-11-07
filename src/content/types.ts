@@ -45,6 +45,14 @@ export type Visual =
   /** Coins and notes, values in shekels (0.1, 0.5, 1, 2, 5, 10, 20, 50, 100, 200). */
   | { type: 'money'; items: number[] }
   | { type: 'solid'; solid: SolidName; color?: string }
+  /** Area model for multiplication: rows (left labels) × cols (top labels). Cells show products or "?". */
+  | { type: 'area'; rows: number[]; cols: number[]; showProducts?: boolean }
+  /** Rectangle with side lengths; `grid` draws unit squares. */
+  | { type: 'rect'; w: number; h: number; unit?: string; grid?: boolean; hideW?: boolean; hideH?: boolean }
+  /** Polygon (drawn regular, not to scale) with a label on each side. */
+  | { type: 'polygon'; sides: (number | null)[]; unit?: string }
+  /** An angle of `deg` degrees. */
+  | { type: 'angle'; deg: number; rotate?: number }
   /** rows × cols grid (multiplication as an array). */
   | { type: 'array'; rows: number; cols: number; emoji?: string }
   /** Number bond: whole on top, two parts below. null = "?" */

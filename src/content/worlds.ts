@@ -1,6 +1,7 @@
 import type { Level, Topic, World } from './types';
 import { grade1Topics } from './grades/grade1';
 import { grade2Topics } from './grades/grade2';
+import { grade3Topics } from './grades/grade3';
 
 export const worlds: World[] = [
   {
@@ -40,7 +41,7 @@ export const worlds: World[] = [
       accentDark: '#d9480f',
       soft: '#fff9db',
     },
-    topics: [],
+    topics: grade3Topics,
   },
   {
     id: 4,

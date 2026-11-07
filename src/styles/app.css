@@ -1296,6 +1296,32 @@ button.obj:active {
   font-size: 1.6rem;
 }
 
+/* figures: area model, rectangle, polygon, angle */
+.area-model,
+.rect-fig,
+.poly-fig,
+.angle-fig {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+}
+.angle-fig {
+  max-width: 260px;
+}
+.area-model__label,
+.fig-label {
+  font-size: 20px;
+  font-weight: 700;
+  fill: #343a40;
+  font-family: inherit;
+}
+.area-model__cell {
+  font-size: 22px;
+  font-weight: 700;
+  fill: #1864ab;
+  font-family: inherit;
+}
+
 /* multiplication array */
 .array {
   display: grid;
