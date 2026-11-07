@@ -33,7 +33,14 @@ export function ChoiceExercise({ q, locked, reveal, onSubmit }: ExerciseProps<'c
             disabled={locked && !isRight}
             aria-label={o.label}
           >
-            {o.visual ? <VisualView v={o.visual} /> : <MathText>{o.label}</MathText>}
+            {o.visual ? (
+              <VisualView v={o.visual} />
+            ) : /[֐-׿]/.test(o.label) ? (
+              // Hebrew words: normal text that can wrap on small screens
+              <span className="choice__text">{o.label}</span>
+            ) : (
+              <MathText>{o.label}</MathText>
+            )}
           </button>
         );
       })}

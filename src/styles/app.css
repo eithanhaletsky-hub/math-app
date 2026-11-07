@@ -678,6 +678,14 @@ p {
 .choice .math {
   font-weight: 700;
 }
+.choice__text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.choices--row .choice {
+  min-width: 0;
+}
 .choice--visual {
   display: grid;
   place-items: center;
