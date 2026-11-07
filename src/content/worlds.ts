@@ -3,6 +3,7 @@ import { grade1Topics } from './grades/grade1';
 import { grade2Topics } from './grades/grade2';
 import { grade3Topics } from './grades/grade3';
 import { grade4Topics } from './grades/grade4';
+import { grade5Topics } from './grades/grade5';
 
 export const worlds: World[] = [
   {
@@ -68,7 +69,7 @@ export const worlds: World[] = [
       accentDark: '#087f5b',
       soft: '#e6fcf5',
     },
-    topics: [],
+    topics: grade5Topics,
   },
   {
     id: 6,

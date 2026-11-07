@@ -1333,6 +1333,33 @@ button.obj:active {
   font-family: inherit;
 }
 
+/* bar chart */
+.barchart {
+  margin: 0;
+  width: 100%;
+  max-width: 420px;
+}
+.barchart svg {
+  width: 100%;
+  height: auto;
+}
+.barchart__title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+.barchart__tick {
+  font-size: 13px;
+  fill: #868e96;
+  font-family: inherit;
+}
+.barchart__label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: #343a40;
+  font-family: inherit;
+}
+
 /* multiplication array */
 .array {
   display: grid;

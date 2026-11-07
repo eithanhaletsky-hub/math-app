@@ -20,6 +20,8 @@ function checkQuestion(q: Question, where: string) {
     }
     case 'input':
       expect(Number.isFinite(q.answer), `${where}: finite answer`).toBe(true);
+      // the keypad can only type up to 2 decimal places exactly
+      expect(Math.abs(q.answer * 100 - Math.round(q.answer * 100)), `${where}: ≤ 2 decimals (${q.answer})`).toBeLessThan(1e-6);
       expect(q.answer, `${where}: non-negative`).toBeGreaterThanOrEqual(0);
       if (!q.decimal) expect(Number.isInteger(q.answer), `${where}: integer`).toBe(true);
       break;

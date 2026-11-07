@@ -59,6 +59,12 @@ export type Visual =
   | { type: 'rect'; w: number; h: number; unit?: string; grid?: boolean; hideW?: boolean; hideH?: boolean }
   /** Polygon (drawn regular, not to scale) with a label on each side. */
   | { type: 'polygon'; sides: (number | null)[]; unit?: string }
+  /** Bar chart (single series). */
+  | { type: 'barchart'; bars: { label: string; value: number }[]; step: number; title?: string }
+  /** Triangle or parallelogram with base and (dashed) height marked. */
+  | { type: 'baseHeight'; shape: 'triangle' | 'parallelogram' | 'trapezoid'; base: number; height: number; top?: number; unit?: string }
+  /** Box (cuboid) with length, width and height labels. */
+  | { type: 'cuboid'; l: number; w: number; h: number; unit?: string }
   /** Two lines: parallel, perpendicular, or just crossing. */
   | { type: 'lines'; kind: 'parallel' | 'perpendicular' | 'crossing'; rotate?: number }
   /** An angle of `deg` degrees. */

@@ -196,6 +196,119 @@ export function PolygonFigure({ sides, unit = '' }: { sides: (number | null)[]; 
   );
 }
 
+/** Single-series bar chart with a recessive grid; values readable from the axis. */
+export function BarChart({ bars, step, title }: { bars: { label: string; value: number }[]; step: number; title?: string }) {
+  const max = Math.ceil(Math.max(...bars.map((b) => b.value)) / step) * step;
+  const W = 320;
+  const H = 180;
+  const ox = 40;
+  const oy = 14;
+  const slot = W / bars.length;
+  const bw = Math.min(44, slot * 0.6);
+  const y = (v: number) => oy + H - (v / max) * H;
+  const ticks = Array.from({ length: max / step + 1 }, (_, i) => i * step);
+  return (
+    <figure className="barchart">
+      {title && <figcaption className="barchart__title">{title}</figcaption>}
+      <svg viewBox={`0 0 ${ox + W + 10} ${oy + H + 34}`} style={{ direction: 'ltr' }} role="img" aria-label={bars.map((b) => `${b.label}: ${b.value}`).join(', ')}>
+        {ticks.map((t) => (
+          <g key={t}>
+            <line x1={ox} x2={ox + W} y1={y(t)} y2={y(t)} stroke="#e9ecef" strokeWidth="1.5" />
+            <text x={ox - 6} y={y(t) + 5} textAnchor="end" className="barchart__tick">
+              {t}
+            </text>
+          </g>
+        ))}
+        <line x1={ox} x2={ox + W} y1={y(0)} y2={y(0)} stroke="#868e96" strokeWidth="2" />
+        {bars.map((b, i) => {
+          const x = ox + i * slot + (slot - bw) / 2;
+          const top = y(b.value);
+          const h = y(0) - top;
+          return (
+            <g key={b.label}>
+              <title>{`${b.label}: ${b.value}`}</title>
+              <path
+                d={`M ${x} ${y(0)} L ${x} ${top + 4} Q ${x} ${top} ${x + 4} ${top} L ${x + bw - 4} ${top} Q ${x + bw} ${top} ${x + bw} ${top + 4} L ${x + bw} ${y(0)} Z`}
+                fill="#7c5cff"
+                opacity={h > 0 ? 1 : 0}
+              />
+              <text x={x + bw / 2} y={y(0) + 22} textAnchor="middle" className="barchart__label">
+                {b.label}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </figure>
+  );
+}
+
+/** Triangle / parallelogram / trapezoid with base and dashed height. Not to scale. */
+export function BaseHeightFigure({
+  shape,
+  base,
+  height,
+  top,
+  unit = '',
+}: {
+  shape: 'triangle' | 'parallelogram' | 'trapezoid';
+  base: number;
+  height: number;
+  top?: number;
+  unit?: string;
+}) {
+  const u = unit ? ' ' + unit : '';
+  const bx1 = 30;
+  const bx2 = 250;
+  const by = 160;
+  const ty = 30;
+  let pts: string;
+  let hx: number;
+  if (shape === 'triangle') {
+    pts = `${bx1},${by} ${bx2},${by} 170,${ty}`;
+    hx = 170;
+  } else if (shape === 'parallelogram') {
+    pts = `${bx1},${by} ${bx2 - 50},${by} ${bx2},${ty} ${bx1 + 50},${ty}`;
+    hx = bx1 + 50;
+  } else {
+    pts = `${bx1},${by} ${bx2},${by} ${bx2 - 50},${ty} ${bx1 + 70},${ty}`;
+    hx = bx1 + 70;
+  }
+  return (
+    <svg className="rect-fig" viewBox="0 0 290 200" style={{ direction: 'ltr' }} role="img" aria-label="צורה עם בסיס וגובה">
+      <polygon points={pts} fill="#d3f9d8" stroke="#2f9e44" strokeWidth="3" strokeLinejoin="round" />
+      <line x1={hx} y1={ty} x2={hx} y2={by} stroke="#e8590c" strokeWidth="2.5" strokeDasharray="7 5" />
+      <polyline points={`${hx},${by - 12} ${hx + 12},${by - 12} ${hx + 12},${by}`} fill="none" stroke="#e8590c" strokeWidth="2" />
+      <text x={hx + 8} y={(ty + by) / 2 + 6} textAnchor="start" className="fig-label" fill="#e8590c">
+        {`${height}${u}`}
+      </text>
+      <text x={shape === 'parallelogram' ? (bx1 + bx2 - 50) / 2 : (bx1 + bx2) / 2} y={by + 26} textAnchor="middle" className="fig-label">
+        {`${base}${u}`}
+      </text>
+      {shape === 'trapezoid' && top !== undefined && (
+        <text x={(bx1 + 70 + bx2 - 50) / 2} y={ty - 8} textAnchor="middle" className="fig-label">
+          {`${top}${u}`}
+        </text>
+      )}
+    </svg>
+  );
+}
+
+/** Box with labeled length, width and height. */
+export function CuboidFigure({ l, w, h, unit = '' }: { l: number; w: number; h: number; unit?: string }) {
+  const u = unit ? ' ' + unit : '';
+  return (
+    <svg className="rect-fig" viewBox="-60 0 380 200" style={{ direction: 'ltr' }} role="img" aria-label={`תיבה ${l} על ${w} על ${h}`}>
+      <polygon points="40,70 200,70 200,170 40,170" fill="#a5d8ff" stroke="#1864ab" strokeWidth="3" />
+      <polygon points="40,70 90,30 250,30 200,70" fill="#d0ebff" stroke="#1864ab" strokeWidth="3" />
+      <polygon points="200,70 250,30 250,130 200,170" fill="#74c0fc" stroke="#1864ab" strokeWidth="3" />
+      <text x="120" y="192" textAnchor="middle" className="fig-label">{`${l}${u}`}</text>
+      <text x="236" y="168" textAnchor="start" className="fig-label">{`${w}${u}`}</text>
+      <text x="32" y="126" textAnchor="end" className="fig-label">{`${h}${u}`}</text>
+    </svg>
+  );
+}
+
 /** Two lines: parallel, perpendicular (with right-angle mark) or crossing. */
 export function LinesFigure({ kind, rotate = 0 }: { kind: 'parallel' | 'perpendicular' | 'crossing'; rotate?: number }) {
   const s = { stroke: '#1c7ed6', strokeWidth: 5, strokeLinecap: 'round' as const };
