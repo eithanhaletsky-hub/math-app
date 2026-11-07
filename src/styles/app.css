@@ -278,7 +278,7 @@ p {
   background: radial-gradient(circle at 20% 10%, #fff 0, transparent 40%), linear-gradient(180deg, #e5dbff 0%, #d0ebff 100%);
 }
 .map__title {
-  font-size: 1.5rem;
+  font-size: clamp(1.05rem, 5.2vw, 1.5rem);
   color: #5b3fd6;
 }
 .map__hello {
