@@ -50,8 +50,9 @@ function checkQuestion(q: Question, where: string) {
 
 /** Evaluates simple "a + b = ?" / "a − b = ?" expressions to double-check answers. */
 function evalExpr(expr: string): number | null {
-  const calc = (a: number, op: string, b: number) => (op === '+' ? a + b : a - b);
-  let m = /^(\d+) ([+−]) (\d+) = \?$/.exec(expr);
+  const calc = (a: number, op: string, b: number) =>
+    op === '+' ? a + b : op === '−' ? a - b : op === '×' ? a * b : a / b;
+  let m = /^(\d+) ([+−×:]) (\d+) = \?$/.exec(expr);
   if (m) return calc(Number(m[1]), m[2], Number(m[3]));
   // missing number: "a + ? = c", "? + b = c", "a − ? = c"
   m = /^(\d+) ([+−]) \? = (\d+)$/.exec(expr);
@@ -84,6 +85,10 @@ describe('content', () => {
         if (q.kind === 'input' && q.expr) {
           const v = evalExpr(q.expr);
           if (v !== null) expect(q.answer, `${l.id}: ${q.expr}`).toBe(v);
+        }
+        if (q.kind === 'input' && q.visual?.type === 'vertical') {
+          const [a, b] = q.visual.rows;
+          expect(q.answer, `${l.id}: vertical ${a} ${q.visual.op} ${b}`).toBe(q.visual.op === '+' ? a + b : a - b);
         }
         if (q.kind === 'match') {
           for (const p of q.pairs) {

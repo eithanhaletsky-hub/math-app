@@ -108,14 +108,16 @@ export function FractionSvg({
 }
 
 /** An object (pencil-like bar) lying on a centimeter ruler. */
-export function RulerSvg({ length, emoji = '✏️', max }: { length: number; emoji?: string; max?: number }) {
-  const top = max ?? Math.max(10, Math.ceil(length + 2));
+export function RulerSvg({ length, emoji = '✏️', max, start = 0 }: { length: number; emoji?: string; max?: number; start?: number }) {
+  const top = max ?? Math.max(10, Math.ceil(start + length + 2));
   const unit = 560 / top;
   const x0 = 20;
+  const ox = x0 + start * unit;
   return (
     <svg className="ruler" viewBox="0 0 600 130" style={{ direction: 'ltr' }} role="img" aria-label="סרגל">
-      <rect x={x0} y="14" width={length * unit} height="30" rx="8" fill="#ffd43b" stroke="#e67700" strokeWidth="2" />
-      <text x={x0 + (length * unit) / 2} y="38" textAnchor="middle" fontSize="20">
+      <rect x={ox} y="14" width={length * unit} height="30" rx="8" fill="#ffd43b" stroke="#e67700" strokeWidth="2" />
+      <line x1={ox + length * unit} y1="10" x2={ox + length * unit} y2="56" stroke="#e67700" strokeWidth="1.5" strokeDasharray="4 3" />
+      <text x={ox + (length * unit) / 2} y="38" textAnchor="middle" fontSize="20">
         {emoji}
       </text>
       <rect x="8" y="56" width="584" height="66" rx="6" fill="#fff3bf" stroke="#adb5bd" strokeWidth="2" />
@@ -134,7 +136,7 @@ export function RulerSvg({ length, emoji = '✏️', max }: { length: number; em
           </g>
         );
       })}
-      <line x1={x0} y1="10" x2={x0} y2="56" stroke="#e67700" strokeWidth="1.5" strokeDasharray="4 3" />
+      <line x1={ox} y1="10" x2={ox} y2="56" stroke="#e67700" strokeWidth="1.5" strokeDasharray="4 3" />
     </svg>
   );
 }

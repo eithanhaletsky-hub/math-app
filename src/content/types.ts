@@ -18,6 +18,8 @@ export type ShapeName =
   | 'oval'
   | 'rhombus';
 
+export type SolidName = 'cube' | 'box' | 'cylinder' | 'cone' | 'sphere' | 'pyramid';
+
 export type Visual =
   /** Emoji objects in groups. `crossed` marks the last N objects as taken away. */
   | { type: 'objects'; emoji: string; groups: number[]; crossed?: number; tappable?: boolean }
@@ -36,7 +38,15 @@ export type Visual =
   | { type: 'blocks'; hundreds?: number; tens: number; ones: number }
   | { type: 'clock'; hour: number; minute: number }
   | { type: 'shape'; shape: ShapeName; color?: string }
-  | { type: 'ruler'; length: number; emoji?: string; max?: number }
+  /** Object on a cm ruler. `start` lets the object begin somewhere other than 0. */
+  | { type: 'ruler'; length: number; emoji?: string; max?: number; start?: number }
+  /** Column (vertical) addition / subtraction layout. */
+  | { type: 'vertical'; rows: number[]; op: '+' | '−'; result?: number | null }
+  /** Coins and notes, values in shekels (0.1, 0.5, 1, 2, 5, 10, 20, 50, 100, 200). */
+  | { type: 'money'; items: number[] }
+  | { type: 'solid'; solid: SolidName; color?: string }
+  /** rows × cols grid (multiplication as an array). */
+  | { type: 'array'; rows: number; cols: number; emoji?: string }
   /** Number bond: whole on top, two parts below. null = "?" */
   | { type: 'bond'; whole: number | null; parts: [number | null, number | null] }
   | { type: 'fraction'; shape: 'circle' | 'bar'; parts: number; filled: number }

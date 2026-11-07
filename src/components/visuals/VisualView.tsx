@@ -3,6 +3,7 @@ import type { Visual } from '../../content/types';
 import { NumberLineSvg } from './NumberLineSvg';
 import { ClockFace } from './ClockFace';
 import { FractionSvg, RulerSvg, ShapeSvg } from './ShapeSvg';
+import { ArrayGrid, Money, SolidSvg, VerticalSum } from './MoreVisuals';
 
 function Objects({ emoji, groups, crossed = 0, tappable }: { emoji: string; groups: number[]; crossed?: number; tappable?: boolean }) {
   const total = groups.reduce((a, b) => a + b, 0);
@@ -82,7 +83,7 @@ function Blocks({ hundreds = 0, tens, ones }: { hundreds?: number; tens: number;
   return (
     <div className="blocks" dir="ltr" aria-label={`${hundreds} מאות, ${tens} עשרות, ${ones} יחידות`}>
       {hundreds > 0 && (
-        <div className="blocks__col">
+        <div className="blocks__col blocks__col--hundreds">
           {Array.from({ length: hundreds }, (_, i) => (
             <div key={i} className="block-hundred" />
           ))}
@@ -183,13 +184,21 @@ export function VisualView({ v }: { v: Visual }) {
     case 'shape':
       return <ShapeSvg shape={v.shape} color={v.color} />;
     case 'ruler':
-      return <RulerSvg length={v.length} emoji={v.emoji} max={v.max} />;
+      return <RulerSvg length={v.length} emoji={v.emoji} max={v.max} start={v.start} />;
     case 'bond':
       return <Bond whole={v.whole} parts={v.parts} />;
     case 'fraction':
       return (
         <FractionSvg shape={v.shape} parts={v.parts} filled={Array.from({ length: v.parts }, (_, i) => i < v.filled)} />
       );
+    case 'vertical':
+      return <VerticalSum rows={v.rows} op={v.op} result={v.result} />;
+    case 'money':
+      return <Money items={v.items} />;
+    case 'solid':
+      return <SolidSvg solid={v.solid} color={v.color} />;
+    case 'array':
+      return <ArrayGrid rows={v.rows} cols={v.cols} emoji={v.emoji} />;
     case 'bars':
       return <Bars items={v.items} units={v.units} />;
     case 'sequence':
