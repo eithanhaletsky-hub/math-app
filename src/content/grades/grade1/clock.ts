@@ -89,9 +89,60 @@ const hourLater: Level = {
   },
 };
 
+const DAYS = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
+const dayLabel = (i: number) => (i === 6 ? 'שבת' : `יום ${DAYS[i]}`);
+
+const weekDays: Level = {
+  id: 'g1-clock-4',
+  title: 'ימות השבוע',
+  intro: {
+    lines: ['בשבוע יש 7 ימים.', 'ראשון, שני, שלישי, רביעי, חמישי, שישי — ושבת.'],
+    visual: { type: 'sequence', items: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'] },
+  },
+  generate: () => {
+    const d = randInt(0, 6);
+    const kind = randInt(0, 3);
+    const opts = (ans: number) => {
+      const set = new Set<number>([ans]);
+      for (const x of shuffle([1, -1, 2, -2, 3])) {
+        if (set.size >= 4) break;
+        set.add((ans + x + 7) % 7);
+      }
+      return [...set].sort((a, b) => a - b).map((i) => ({ value: String(i), label: dayLabel(i) }));
+    };
+    if (kind === 3) {
+      return {
+        kind: 'choice',
+        text: 'כמה ימים יש בשבוע?',
+        options: [5, 6, 7, 10].map((n) => ({ value: String(n), label: String(n) })),
+        answer: '7',
+        hint: 'ספור: ראשון, שני, שלישי… עד שבת.',
+        explain: 'בשבוע יש 7 ימים: ראשון עד שבת.',
+      };
+    }
+    const shift = kind === 0 ? 1 : kind === 1 ? -1 : 2;
+    const ans = (d + shift + 7) % 7;
+    const q =
+      kind === 0
+        ? `היום ${dayLabel(d)}. איזה יום יהיה **מחר**?`
+        : kind === 1
+          ? `היום ${dayLabel(d)}. איזה יום היה **אתמול**?`
+          : `היום ${dayLabel(d)}. איזה יום יהיה **מחרתיים**?`;
+    return {
+      kind: 'choice',
+      text: q,
+      visual: { type: 'sequence', items: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'] },
+      options: opts(ans),
+      answer: String(ans),
+      hint: kind === 1 ? 'אתמול = יום אחד אחורה.' : kind === 0 ? 'מחר = היום הבא.' : 'מחרתיים = עוד יומיים.',
+      explain: `${kind === 1 ? 'אתמול היה' : kind === 0 ? 'מחר יהיה' : 'מחרתיים יהיה'} ${dayLabel(ans)}.`,
+    };
+  },
+};
+
 export const clockTopic: Topic = {
   id: 'g1-clock',
-  title: 'השעון',
+  title: 'השעון וימות השבוע',
   icon: '🕐',
-  levels: [readHour, setHour, hourLater],
+  levels: [readHour, setHour, hourLater, weekDays],
 };

@@ -1,3 +1,6 @@
+/** The minus sign used in exercises (looks better than a hyphen). */
+export const MINUS = '−';
+
 /** Things to count, with Hebrew plural names. */
 export const COUNTABLES = [
   { emoji: '🍎', plural: 'תפוחים' },

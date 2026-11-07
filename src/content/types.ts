@@ -39,7 +39,11 @@ export type Visual =
   | { type: 'ruler'; length: number; emoji?: string; max?: number }
   /** Number bond: whole on top, two parts below. null = "?" */
   | { type: 'bond'; whole: number | null; parts: [number | null, number | null] }
-  | { type: 'fraction'; shape: 'circle' | 'bar'; parts: number; filled: number };
+  | { type: 'fraction'; shape: 'circle' | 'bar'; parts: number; filled: number }
+  /** Horizontal bars to compare lengths. `units` draws unit boxes inside each bar. */
+  | { type: 'bars'; items: { label: string; length: number; color: string }[]; units?: boolean }
+  /** A row of items with a "?" (for patterns / sequences). */
+  | { type: 'sequence'; items: string[] };
 
 export interface Option {
   value: string;

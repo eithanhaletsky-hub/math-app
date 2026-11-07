@@ -50,11 +50,22 @@ function checkQuestion(q: Question, where: string) {
 
 /** Evaluates simple "a + b = ?" / "a − b = ?" expressions to double-check answers. */
 function evalExpr(expr: string): number | null {
-  const m = /^(\d+) ([+−]) (\d+) = \?$/.exec(expr);
+  const calc = (a: number, op: string, b: number) => (op === '+' ? a + b : a - b);
+  let m = /^(\d+) ([+−]) (\d+) = \?$/.exec(expr);
+  if (m) return calc(Number(m[1]), m[2], Number(m[3]));
+  // missing number: "a + ? = c", "? + b = c", "a − ? = c"
+  m = /^(\d+) ([+−]) \? = (\d+)$/.exec(expr);
+  if (m) return m[2] === '+' ? Number(m[3]) - Number(m[1]) : Number(m[1]) - Number(m[3]);
+  m = /^\? ([+−]) (\d+) = (\d+)$/.exec(expr);
+  if (m) return m[1] === '+' ? Number(m[3]) - Number(m[2]) : Number(m[3]) + Number(m[2]);
+  return null;
+}
+
+/** Evaluates "a + b" / "a − b" labels (used in match questions). */
+function evalLabel(label: string): number | null {
+  const m = /^(\d+) ([+−]) (\d+)$/.exec(label);
   if (!m) return null;
-  const a = Number(m[1]);
-  const b = Number(m[3]);
-  return m[2] === '+' ? a + b : a - b;
+  return m[2] === '+' ? Number(m[1]) + Number(m[3]) : Number(m[1]) - Number(m[3]);
 }
 
 describe('content', () => {
@@ -65,7 +76,7 @@ describe('content', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  for (const { t, l } of levels) {
+  for (const { w, t, l } of levels) {
     it(`${t.title} › ${l.title} generates valid questions`, () => {
       for (let i = 0; i < RUNS; i++) {
         const q = l.generate();
@@ -74,6 +85,13 @@ describe('content', () => {
           const v = evalExpr(q.expr);
           if (v !== null) expect(q.answer, `${l.id}: ${q.expr}`).toBe(v);
         }
+        if (q.kind === 'match') {
+          for (const p of q.pairs) {
+            const v = evalLabel(p.left.label);
+            if (v !== null) expect(Number(p.right.label), `${l.id}: ${p.left.label}`).toBe(v);
+          }
+        }
+        if (w.id === 1 && q.kind === 'input') expect(q.answer, `${l.id}: answer ≤ 100 in grade 1`).toBeLessThanOrEqual(100);
       }
       expect(buildRound(l).length).toBe(l.questions ?? 10);
     });

@@ -119,6 +119,43 @@ function Hundred({ highlight = [], hidden = [], from = 1 }: { highlight?: number
   );
 }
 
+function Bars({ items, units }: { items: { label: string; length: number; color: string }[]; units?: boolean }) {
+  const max = Math.max(...items.map((i) => i.length));
+  return (
+    <div className="bars" dir="ltr">
+      {items.map((it, i) => (
+        <div key={i} className="bars__row">
+          <div className="bars__track">
+            <div
+              className={`bars__bar ${units ? 'bars__bar--units' : ''}`}
+              style={
+                {
+                  width: `${(it.length / max) * 100}%`,
+                  background: it.color,
+                  '--unit': `${100 / it.length}%`,
+                } as React.CSSProperties
+              }
+            />
+          </div>
+          <div className="bars__label">{it.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Sequence({ items }: { items: string[] }) {
+  return (
+    <div className="sequence" dir="ltr">
+      {items.map((it, i) => (
+        <span key={i} className={`sequence__item ${it === '?' ? 'sequence__item--q' : ''}`}>
+          {it}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export function VisualView({ v }: { v: Visual }) {
   switch (v.type) {
     case 'objects':
@@ -153,5 +190,9 @@ export function VisualView({ v }: { v: Visual }) {
       return (
         <FractionSvg shape={v.shape} parts={v.parts} filled={Array.from({ length: v.parts }, (_, i) => i < v.filled)} />
       );
+    case 'bars':
+      return <Bars items={v.items} units={v.units} />;
+    case 'sequence':
+      return <Sequence items={v.items} />;
   }
 }

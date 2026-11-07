@@ -8,6 +8,8 @@ export function ChoiceExercise({ q, locked, reveal, onSubmit }: ExerciseProps<'c
   const [chosen, setChosen] = useState<string | null>(null);
   const hasVisuals = q.options.some((o) => o.visual);
   const layout = q.optionsLayout ?? (hasVisuals || q.options.length > 4 ? 'grid' : 'row');
+  // numbers and math run left-to-right (small → big), like on a number line
+  const mathy = q.options.every((o) => !/[֐-׿]/.test(o.label));
 
   const choose = (value: string) => {
     if (locked || wrong.has(value)) return;
@@ -18,7 +20,7 @@ export function ChoiceExercise({ q, locked, reveal, onSubmit }: ExerciseProps<'c
   };
 
   return (
-    <div className={`choices choices--${layout}`}>
+    <div className={`choices choices--${layout} choices--n${q.options.length}`} dir={mathy ? 'ltr' : undefined}>
       {q.options.map((o) => {
         const isRight = (chosen === o.value && o.value === q.answer) || (reveal && o.value === q.answer);
         const isWrong = wrong.has(o.value);

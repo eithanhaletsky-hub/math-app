@@ -696,6 +696,13 @@ p {
   flex: 1 1 0;
   max-width: 150px;
 }
+@media (max-width: 520px) {
+  /* 4 options → 2×2 on phones instead of 3 + 1 */
+  .choices--row.choices--n4 .choice {
+    flex: 1 1 calc(50% - 12px);
+    max-width: none;
+  }
+}
 
 /* typed answer + keypad */
 .input-ex {
@@ -1121,6 +1128,61 @@ button.obj:active {
   font-weight: 700;
   fill: #343a40;
   font-family: inherit;
+}
+
+/* length bars */
+.bars {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bars__row {
+  display: grid;
+  grid-template-columns: 1fr 64px;
+  align-items: center;
+  gap: 10px;
+}
+.bars__track {
+  border-left: 3px dashed #868e96;
+}
+.bars__bar {
+  height: 34px;
+  border-radius: 0 10px 10px 0;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.15);
+}
+.bars__bar--units {
+  background-image: repeating-linear-gradient(90deg, transparent 0 calc(var(--unit) - 2px), rgba(0, 0, 0, 0.45) calc(var(--unit) - 2px) var(--unit)) !important;
+  background-blend-mode: normal;
+}
+.bars__label {
+  font-size: 1.9rem;
+  text-align: center;
+}
+
+/* pattern sequence */
+.sequence {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+.sequence__item {
+  min-width: 52px;
+  height: 56px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+  font-size: 1.9rem;
+  font-weight: 700;
+  background: var(--soft);
+  border-radius: 14px;
+}
+.sequence__item--q {
+  border: 3px dashed var(--accent);
+  background: #fff;
+  color: var(--accent);
 }
 
 /* drag & match */
