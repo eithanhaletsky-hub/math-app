@@ -146,6 +146,15 @@ p {
   text-overflow: ellipsis;
 }
 
+/* titles stay readable on every world background (including the dark "space" world) */
+.world .topbar__title,
+.level .topbar__title {
+  flex: 0 1 auto;
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 999px;
+  padding: 4px 14px;
+}
+
 .icon-btn {
   width: 52px;
   height: 52px;
