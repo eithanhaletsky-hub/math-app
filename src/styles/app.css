@@ -154,6 +154,17 @@ p {
   border-radius: 999px;
   padding: 4px 14px;
 }
+@media (max-width: 420px) {
+  .world .topbar__title,
+  .level .topbar__title {
+    font-size: 1rem;
+    padding: 4px 10px;
+  }
+  .topbar__start,
+  .topbar__end {
+    gap: 6px;
+  }
+}
 
 .icon-btn {
   width: 52px;
