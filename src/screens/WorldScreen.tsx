@@ -37,7 +37,7 @@ export function WorldScreen({ worldId }: { worldId: number }) {
         } as React.CSSProperties
       }
     >
-      <TopBar title={`${world.icon} ${world.grade} · ${world.name}`} onBack={() => go('/')} backLabel="למפת העולמות">
+      <TopBar title={`${world.icon} ${world.grade}`} onBack={() => go('/')} backLabel="למפת העולמות">
         <span className="pill">
           ★ <bdi dir="ltr">{`${got} / ${total}`}</bdi>
         </span>
